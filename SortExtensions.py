@@ -23,25 +23,32 @@ def is_video(file):
 def is_image(file):
     return os.path.splitext(file)[1] in img
 
+def create_folder(directory_path, folder_name):
+    # Create the folder if it doesn't exist
+    folder_path = os.path.join(directory_path, folder_name)
+    os.makedirs(folder_path, exist_ok=True)
+    return folder_path
+
+def move_file(source_file, destination_folder):
+    # Move the file to the destination folder
+    shutil.move(source_file, destination_folder)
+
 def organize_files(directory_path, folder_type, folder_name):
     # Change the current working directory
     os.chdir(directory_path)
 
     for file in os.listdir():
         if is_image(file) and folder_type == "i":
-            destination_folder = os.path.join(directory_path, folder_name)
+            destination_folder = create_folder(directory_path, folder_name)
+            move_file(file, destination_folder)
         elif is_video(file) and folder_type == "v":
-            destination_folder = os.path.join(directory_path, folder_name)
+            destination_folder = create_folder(directory_path, folder_name)
+            move_file(file, destination_folder)
         elif is_audio(file) and folder_type == "a":
-            destination_folder = os.path.join(directory_path, folder_name)
+            destination_folder = create_folder(directory_path, folder_name)
+            move_file(file, destination_folder)
         else:
             continue  # Skip files that don't match the selected folder type
-
-        # Create the destination folder if it doesn't exist
-        os.makedirs(destination_folder, exist_ok=True)
-
-        # Move the file to the destination folder
-        shutil.move(file, destination_folder)
 
 # Accept the directory path from the user
 directory_path = input("Enter the directory path: ")
@@ -74,6 +81,4 @@ else:
     folder_type = input("What type of folder is it: ")
 
     # Call the function to organize the files into the selected folder
-    organize_files(directory_path, folder_type, folder_name)
-
-    # Call the function to organize the files
+    organize_files(directory_path, folder_type,folder_name)
