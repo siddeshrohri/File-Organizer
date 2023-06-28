@@ -46,15 +46,34 @@ def organize_files(directory_path, folder_type, folder_name):
 # Accept the directory path from the user
 directory_path = input("Enter the directory path: ")
 
-# Ask the user which folder to create
-print("Choose a folder type:")
-print("a - Audio")
-print("v - Video")
-print("i - Images")
-folder_type = input("Enter the folder type: ")
+# Ask the user whether they want to create a new folder or use an existing folder
+create_new_folder = input("Do you want to create a new folder? (yes/no): ")
 
-# Prompt for the folder name based on the selected folder type
-folder_name = input("Enter the folder name: ")
+if create_new_folder.lower() == "yes":
+    # Ask the user which folder to create
+    print("Choose a folder type:")
+    print("a - Audio")
+    print("v - Video")
+    print("i - Images")
+    folder_type = input("Enter the folder type: ")
 
-# Call the function to organize the files into the selected folder
-organize_files(directory_path, folder_type, folder_name)
+    # Prompt for the folder name based on the selected folder type
+    folder_name = input("Enter the folder name: ")
+
+    # Call the function to organize the files into the selected folder
+    organize_files(directory_path, folder_type, folder_name)
+else:
+    # Ask the user for the existing folder name
+    folder_name = input("Enter the existing folder name: ")
+
+    # Ask the user which folder to create
+    print("Choose a folder type:")
+    print("a - Audio")
+    print("v - Video")
+    print("i - Images")
+    folder_type = input("What type of folder is it: ")
+
+    # Call the function to organize the files into the selected folder
+    organize_files(directory_path, folder_type, folder_name)
+
+    # Call the function to organize the files
