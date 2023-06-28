@@ -21,79 +21,40 @@ def is_video(file):
     return os.path.splitext(file)[1] in video
 
 def is_image(file):
-    print(os.path.splitext(file)[1] in img)
     return os.path.splitext(file)[1] in img
 
-def organize_files(directory_path, target_directory):
+def organize_files(directory_path, folder_type, folder_name):
     # Change the current working directory
     os.chdir(directory_path)
 
     for file in os.listdir():
-        if is_image(file):
-            shutil.move(file, os.path.join(directory_path, target_directory, file))
+        if is_image(file) and folder_type == "i":
+            destination_folder = os.path.join(directory_path, folder_name)
+        elif is_video(file) and folder_type == "v":
+            destination_folder = os.path.join(directory_path, folder_name)
+        elif is_audio(file) and folder_type == "a":
+            destination_folder = os.path.join(directory_path, folder_name)
+        else:
+            continue  # Skip files that don't match the selected folder type
 
+        # Create the destination folder if it doesn't exist
+        os.makedirs(destination_folder, exist_ok=True)
+
+        # Move the file to the destination folder
+        shutil.move(file, destination_folder)
 
 # Accept the directory path from the user
 directory_path = input("Enter the directory path: ")
 
-# Ask the user if they want to create a new directory
-create_new_directory = input("Do you want to create a new directory? (yes/no): ")
-option = input("If you wish to create a directory, choose from the following options: a-Audio v-Video i-Image")
-match option:
-   case "a":
-    if create_new_directory.lower() == "yes":
-        # Accept the name of the new directory from the user
-        new_directory_name = input("Enter the name of the new directory: ")
-        new_directory_path = os.path.join(directory_path, new_directory_name)
+# Ask the user which folder to create
+print("Choose a folder type:")
+print("a - Audio")
+print("v - Video")
+print("i - Images")
+folder_type = input("Enter the folder type: ")
 
-        # Create the new directory
-        os.makedirs(new_directory_path)
+# Prompt for the folder name based on the selected folder type
+folder_name = input("Enter the folder name: ")
 
-        # Call the outer function to organize the files in the new directory
-        organize_files(directory_path, new_directory_name)
-    else:
-        # Accept the name of the existing directory from the user
-        existing_directory_name = input("Enter the name of the existing directory: ")
-        existing_directory_path = os.path.join(directory_path, existing_directory_name)
-
-        # Call the outer function to organize the files in the existing directory
-        organize_files(directory_path, existing_directory_name)
-   
-   case "v":
-    if create_new_directory.lower() == "yes":
-        # Accept the name of the new directory from the user
-        new_directory_name = input("Enter the name of the new directory: ")
-        new_directory_path = os.path.join(directory_path, new_directory_name)
-
-        # Create the new directory
-        os.makedirs(new_directory_path)
-
-        # Call the outer function to organize the files in the new directory
-        organize_files(directory_path, new_directory_name)
-    else:
-        # Accept the name of the existing directory from the user
-        existing_directory_name = input("Enter the name of the existing directory: ")
-        existing_directory_path = os.path.join(directory_path, existing_directory_name)
-
-        # Call the outer function to organize the files in the existing directory
-        organize_files(directory_path, existing_directory_name)
-
-   case "i":
-    if create_new_directory.lower() == "yes":
-        # Accept the name of the new directory from the user
-        new_directory_name = input("Enter the name of the new directory: ")
-        new_directory_path = os.path.join(directory_path, new_directory_name)
-
-        # Create the new directory
-        os.makedirs(new_directory_path)
-
-        # Call the outer function to organize the files in the new directory
-        organize_files(directory_path, new_directory_name)
-    else:
-        # Accept the name of the existing directory from the user
-        existing_directory_name = input("Enter the name of the existing directory: ")
-        existing_directory_path = os.path.join(directory_path, existing_directory_name)
-
-        # Call the outer function to organize the files in the existing directory
-        organize_files(directory_path, existing_directory_name)
-
+# Call the function to organize the files into the selected folder
+organize_files(directory_path, folder_type, folder_name)
