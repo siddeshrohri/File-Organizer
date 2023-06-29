@@ -137,21 +137,36 @@ def test_use_existing_folder_audio():
         if is_audio(file):
             assert os.path.exists(os.path.join(directory_path, folder_name, file))
 
-# Run the test cases if the user chooses to run the test script
+# Run the test cases and count the number of tests passed and failed
 def run_test_script():
     print("Test Script")
     print("-" * 50)
     print("This script will test the functionality of the file organizer.")
-    print("Running the test cases...\n")
     
-    test_create_new_folder_images()
-    test_create_new_folder_videos()
-    test_create_new_folder_audio()
-    test_use_existing_folder_images()
-    test_use_existing_folder_videos()
-    test_use_existing_folder_audio()
+    test_cases = [
+        {"test_number": 1, "description": "Create a new folder for images", "test_function": test_create_new_folder_images},
+        {"test_number": 2, "description": "Create a new folder for videos", "test_function": test_create_new_folder_videos},
+        {"test_number": 3, "description": "Create a new folder for audio", "test_function": test_create_new_folder_audio},
+        {"test_number": 4, "description": "Use an existing folder for images", "test_function": test_use_existing_folder_images},
+        {"test_number": 5, "description": "Use an existing folder for videos", "test_function": test_use_existing_folder_videos},
+        {"test_number": 6, "description": "Use an existing folder for audio", "test_function": test_use_existing_folder_audio}
+    ]
     
-    print("\nAll tests passed successfully.")
+    tests_passed = 0
+    tests_failed = 0
+    
+    for test_case in test_cases:
+        try:
+            test_case["test_function"]()
+            tests_passed += 1
+            print(f"Test {test_case['test_number']} Passed: {test_case['description']}")
+        except AssertionError:
+            tests_failed += 1
+            print(f"Test {test_case['test_number']} Failed: {test_case['description']}")
+    
+    print(f"\nTotal Tests: {len(test_cases)}")
+    print(f"Tests Passed: {tests_passed}/{len(test_cases)}")
+    print(f"Tests Failed: {tests_failed}/{len(test_cases)}")
 
 # Prompt the user to run the test script
 def prompt_to_run_test_script():
